@@ -430,9 +430,9 @@ msgstr ""
 #. module: l10n_it_fatturapa_out
 #: code:addons/l10n_it_fatturapa_out/models/account.py:0
 #, python-format
-msgid "Invoice %s has XML and can't be canceled. Delete the XML before."
+msgid "Invoice %s has XML and can't be reset to draft. Delete the XML before."
 msgstr ""
-"File XML già presente per la fattura %s. Per annullarla eliminare prima il "
+"File XML già presente per la fattura %s. Per riportarla a bozza eliminare prima il "
 "file."
 
 #. module: l10n_it_fatturapa_out
