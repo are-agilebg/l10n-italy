@@ -301,7 +301,7 @@ odoo.define("fiscal_epos_print.epson_epos_print", function (require) {
                 (args.quantity || "1") +
                 '"' +
                 ' unitPrice="' +
-                (args.unitPrice || "") +
+                (args.unitPrice.toFixed(2) || "") +
                 '"' +
                 ' department="' +
                 (args.department || "1") +
