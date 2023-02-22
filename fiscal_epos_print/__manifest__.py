@@ -42,14 +42,16 @@
             "fiscal_epos_print/static/src/js/ChromeWidgets/EpsonFP81IIComponent.js",
             # TODO Unstable components that must be checked
             # NOTE: New components SetLottery and SetRefund
-            # "fiscal_epos_print/static/src/js/ChromeWidgets/SetLotteryCodeButton.js",
+            "fiscal_epos_print/static/src/js/ChromeWidgets/SetLotteryCodeButton.js",
             "fiscal_epos_print/static/src/js/ChromeWidgets/SetRefundInfoButton.js",
             # Popups
+            "fiscal_epos_print/static/src/js/Popups/LotteryCodePopup.js",
             "fiscal_epos_print/static/src/js/Popups/RefundInfoPopup.js",
             # Screens
             "fiscal_epos_print/static/src/js/Screens/PaymentScreen/PaymentScreen.js",
             "fiscal_epos_print/static/src/js/Screens/ReceiptScreen/ReceiptScreen.js",
             # Popups
+            "fiscal_epos_print/static/src/xml/Popups/LotteryCodePopup.xml",
             "fiscal_epos_print/static/src/xml/Popups/RefundInfoPopup.xml",
             # Others
             "fiscal_epos_print/static/src/xml/Chrome.xml",

@@ -25,10 +25,11 @@ odoo.define("fiscal_epos_print.SetLotteryCodeButton", function (require) {
 
         render() {
             var color = this.lottery_get_button_color();
-            this.$el.css("background", color);
+            $(this.el).css("background", color);
         }
 
         async onClick() {
+            var self = this;
             var current_order = this.env.pos.get_order();
             Gui.showPopup("LotteryCodePopup", {
                 title: _t("Lottery Code"),

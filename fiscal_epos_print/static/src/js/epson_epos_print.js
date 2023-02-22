@@ -549,6 +549,29 @@ odoo.define("fiscal_epos_print.epson_epos_print", function (require) {
         },
 
         /*
+          Prints info payment customer
+        */
+        printInfoPaymentCustomer: function (receipt) {
+            var tag =
+                '<printRecMessage operator="1" message="------------------" messageType="3" index="4" font="2" />';
+            var c = 2;
+            _.each(receipt.ticket.split("<br/>"), function (msg) {
+                c += 1;
+                tag +=
+                    "<printRecMessage " +
+                    'operator="' +
+                    (receipt.operator || "1") +
+                    '"' +
+                    ' messageType="3" message="' +
+                    msg +
+                    '" font="1" index="' +
+                    c.toString() +
+                    '" />';
+            });
+            return tag;
+        },
+
+        /*
           Prints a receipt
         */
         printFiscalReceipt: function (receipt) {
@@ -631,13 +654,28 @@ odoo.define("fiscal_epos_print.epson_epos_print", function (require) {
                 // Example: 113501ABCDEFGN        0000
                 // Pad with spaces to make the code field always 16 characters.
                 xml +=
-                    '<directIO command="1135" data="01' +
-                    receipt.lottery_code.padEnd(16, " ") +
-                    '0000" />';
+                    '<printRecLotteryID operator="' +
+                    (receipt.operator || "1") +
+                    '" code="' +
+                    receipt.lottery_code +
+                    '" />';
+            }
+            if (receipt.rounding_applied !== 0 && !has_refund) {
+                xml += self.printRounding({
+                    amount: Math.abs(
+                        round_pr(
+                            receipt.rounding_applied,
+                            self.sender.env.pos.currency.rounding
+                        )
+                    ),
+                });
+                xml += '<printRecSubtotal operator="1" option="1" />';
             }
             // TODO is always the same Total for refund and payments?
             receipt.ticket = "";
             _.each(receipt.paymentlines, function (l) {
+                // Set ticket
+                receipt.ticket += l.ticket;
                 // Amount always positive because it's used for refund too
                 if (!has_refund) {
                     xml += self.printRecTotal({
@@ -669,6 +707,9 @@ odoo.define("fiscal_epos_print.epson_epos_print", function (require) {
             //     });
             // }
             xml += this.printOrderId(receipt);
+            if (receipt.ticket) {
+                xml += this.printInfoPaymentCustomer(receipt);
+            }
             xml += '<endFiscalReceipt operator="1" />';
             xml += "</printerFiscalReceipt>";
             this.fiscalPrinter.send(this.url, xml);
