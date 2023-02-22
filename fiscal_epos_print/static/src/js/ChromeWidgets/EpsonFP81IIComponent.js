@@ -11,8 +11,8 @@ odoo.define("fiscal_epos_print.EpsonFP81IIComponent", function (require) {
     const Registries = require("point_of_sale.Registries");
 
     class EpsonFP81IIComponent extends PosComponent {
-        constructor(parent, options) {
-            super(parent, options);
+        constructor() {
+            super(...arguments);
             var self = this;
 
             // For dragging the debug widget around
@@ -62,31 +62,26 @@ odoo.define("fiscal_epos_print.EpsonFP81IIComponent", function (require) {
             };
         }
 
-        mounted() {
-            // Jquery reference of the component
-            this.$el = $(this.el);
-            // Drag listeners
-            this.el.addEventListener("mouseleave", this.dragend_handler);
-            this.el.addEventListener("mouseup", this.dragend_handler);
-            this.el.addEventListener("touchend", this.dragend_handler);
-            this.el.addEventListener("touchcancel", this.dragend_handler);
-            this.el.addEventListener("mousedown", this.dragstart_handler);
-            this.el.addEventListener("touchstart", this.dragstart_handler);
-            this.el.addEventListener("mousemove", this.dragmove_handler);
-            this.el.addEventListener("touchmove", this.dragmove_handler);
+        //        OnMounted() {
+        //            // Drag listeners
+        //            this.el.addEventListener("mouseleave", this.dragend_handler);
+        //            this.el.addEventListener("mouseup", this.dragend_handler);
+        //            this.el.addEventListener("touchend", this.dragend_handler);
+        //            this.el.addEventListener("touchcancel", this.dragend_handler);
+        //            this.el.addEventListener("mousedown", this.dragstart_handler);
+        //            this.el.addEventListener("touchstart", this.dragstart_handler);
+        //            this.el.addEventListener("mousemove", this.dragmove_handler);
+        //            this.el.addEventListener("touchmove", this.dragmove_handler);
+        //        }
+
+        do_show() {
+            var epsonFP81IIComponent = $(".status-buttons .epson-fp81ii-widget");
+            epsonFP81IIComponent.removeClass("oe_hidden");
         }
 
-        show() {
-            this.$el.css({opacity: 0});
-            this.$el.removeClass("oe_hidden");
-            this.$el.animate({opacity: 1}, 250, "swing");
-        }
-
-        hide() {
-            var self = this;
-            this.$el.animate({opacity: 0}, 250, "swing", function () {
-                self.$el.addClass("oe_hidden");
-            });
+        do_hide() {
+            var epsonFP81IIComponent = $(".status-buttons .epson-fp81ii-widget");
+            epsonFP81IIComponent.addClass("oe_hidden");
         }
 
         getPrinterOptions() {
@@ -97,11 +92,11 @@ odoo.define("fiscal_epos_print.EpsonFP81IIComponent", function (require) {
         }
 
         onToggleComponent() {
-            this.hide();
+            this.do_hide();
         }
 
         async openCashDrawer() {
-            this.hide();
+            this.do_hide();
             // TODO find the same Component method that show loading_*
             // this.chrome.loading_show();
             // this.chrome.loading_message(_t('Connecting to the fiscal printer'));
@@ -113,7 +108,7 @@ odoo.define("fiscal_epos_print.EpsonFP81IIComponent", function (require) {
                 body: _t("Close"),
             });
             if (confirmed) {
-                fp90.resetPrinter();
+                this.resetPrinter();
             } else {
                 // TODO not exist
                 // this.chrome.loading_hide();
@@ -121,7 +116,7 @@ odoo.define("fiscal_epos_print.EpsonFP81IIComponent", function (require) {
         }
 
         async reprintLastReceipt() {
-            this.hide();
+            this.do_hide();
             //            Var self = this;
             //            this._super();
 
@@ -144,7 +139,7 @@ odoo.define("fiscal_epos_print.EpsonFP81IIComponent", function (require) {
         }
 
         showAdeStatus() {
-            this.hide();
+            this.do_hide();
             // TODO find the same Component method that show loading_*
             // this.chrome.loading_show();
             // this.chrome.loading_message(_t('Connecting to the fiscal printer'));
@@ -154,7 +149,7 @@ odoo.define("fiscal_epos_print.EpsonFP81IIComponent", function (require) {
         }
 
         async fiscalClosing() {
-            this.hide();
+            this.do_hide();
             // TODO find the same Component method that show loading_*
             // this.chrome.loading_show();
             // this.chrome.loading_message(_t('Connecting to the fiscal printer'));
@@ -175,7 +170,7 @@ odoo.define("fiscal_epos_print.EpsonFP81IIComponent", function (require) {
         }
 
         async fiscalXreport() {
-            this.hide();
+            this.do_hide();
             // TODO find the same Component method that show loading_*
             // this.chrome.loading_show();
             // this.chrome.loading_message(_t('Connecting to the fiscal printer'));

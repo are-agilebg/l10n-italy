@@ -1,31 +1,28 @@
 odoo.define("fiscal_epos_print.SetRefundInfoButton", function (require) {
     "use strict";
 
-    var core = require("web.core");
-    var _t = core._t;
     const PosComponent = require("point_of_sale.PosComponent");
     const ProductScreen = require("point_of_sale.ProductScreen");
-    // Const {useListener} = require("web.custom_hooks");
     const Registries = require("point_of_sale.Registries");
-    // Const {Gui} = require("point_of_sale.Gui");
-    // const {posbus} = require("point_of_sale.utils");
-    // const PaymentScreen = require("point_of_sale.PaymentScreen");
+    const core = require("web.core");
+    const _t = core._t;
 
     class SetRefundInfoButton extends PosComponent {
-        // Constructor() {
-        // super(...arguments);
-        // useListener('click', this.onClick);
+        //        Constructor() {
+        //            super(...arguments);
+        //            owl.onMounted(this.onMounted);
+        // UseListener('click', this.onClick);
         // This is from older widget system 12.0
         // this.pos.bind('change:selectedOrder',function(){
         //     this.orderline_change();
         //     this.bind_order_events();
         // },this);
-        // }
+        //        }
 
-        mounted() {
-            this.bind_order_events();
-            this.orderline_change();
-        }
+        //        onMounted() {
+        //            this.bind_order_events();
+        //            this.orderline_change();
+        //        }
 
         is_available() {
             const order = this.env.pos.get_order();
@@ -44,9 +41,12 @@ odoo.define("fiscal_epos_print.SetRefundInfoButton", function (require) {
         async onClickRefund() {
             var self = this;
             var current_order = this.env.pos.get_order();
+            var dd = ("0" + current_order.refund_date.getDate()).slice(-2);
+            var mm = ("0" + (current_order.refund_date.getMonth() + 1)).slice(-2);
+            var yyyy = current_order.refund_date.getFullYear();
             this.showPopup("RefundInfoPopup", {
                 title: _t("Refund Information Details"),
-                refund_date: current_order.refund_date,
+                refund_date: yyyy + "-" + mm + "-" + dd,
                 refund_report: current_order.refund_report,
                 refund_doc_num: current_order.refund_doc_num,
                 refund_cash_fiscal_serial: current_order.refund_cash_fiscal_serial,
@@ -127,7 +127,6 @@ odoo.define("fiscal_epos_print.SetRefundInfoButton", function (require) {
     ProductScreen.addControlButton({
         component: SetRefundInfoButton,
         condition: function () {
-            //            Return true;
             return this.env.pos;
         },
     });
