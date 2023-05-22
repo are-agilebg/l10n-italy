@@ -244,7 +244,12 @@ odoo.define("fiscal_epos_print.epson_epos_print", function (require) {
                         order.fiscal_z_rep_number = add_info.zRepNumber;
                         order.fiscal_printer_serial =
                             sender.env.pos.config.fiscal_printer_serial;
-                        sender.env.pos.db.add_order(order.export_as_JSON());
+                        // I think this is a mistake, since at this point
+                        // the order has been already flushed by point_of_sale,
+                        // and adding it will just re-add it as it hasn't been
+                        // successfully flushed
+                        // sender.env.pos.db.add_order(order.export_as_JSON());
+
                         // Try to save the order
                         // TODO is push_orders or push_single_order
                         // sender.env.pos.push_orders();
