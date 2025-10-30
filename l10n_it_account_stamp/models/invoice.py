@@ -10,8 +10,8 @@ class AccountInvoice(models.Model):
         "Tax Stamp", readonly=True, states={'draft': [('readonly', False)]})
 
     def is_tax_stamp_applicable(self):
-        stamp_product_id = self.with_context(
-            lang=self.partner_id.lang).company_id.tax_stamp_product_id
+        stamp_product_id = self.company_id.with_context(
+            lang=self.partner_id.lang).tax_stamp_product_id
         if not stamp_product_id:
             raise exceptions.Warning(
                 _('Missing tax stamp product in company settings!')
@@ -123,8 +123,8 @@ class AccountInvoice(models.Model):
                     posted = True
                     inv.move_id.state = 'draft'
                 line_model = self.env['account.move.line']
-                stamp_product_id = inv.with_context(
-                    lang=inv.partner_id.lang).company_id.tax_stamp_product_id
+                stamp_product_id = inv.company_id.with_context(
+                    lang=inv.partner_id.lang).tax_stamp_product_id
                 if not stamp_product_id:
                     raise exceptions.Warning(
                         _('Missing tax stamp product in company settings!')
